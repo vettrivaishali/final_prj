@@ -1,0 +1,45 @@
+body {
+  background: linear-gradient(180deg, #020617, #020a1f);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: Inter, sans-serif;
+}
+
+.auth-container {
+  background: rgba(15,23,42,0.85);
+  padding: 40px;
+  border-radius: 16px;
+  width: 320px;
+  text-align: center;
+  color: white;
+}
+
+.auth-container input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border-radius: 8px;
+  border: none;
+}
+
+.auth-container button {
+  margin-top: 18px;
+  padding: 12px;
+  width: 100%;
+  border-radius: 8px;
+  background: linear-gradient(135deg,#2563eb,#22d3ee);
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.subtitle {
+  color: #9ca3af;
+}
+
+.switch {
+  margin-top: 15px;
+  font-size: 13px;
+}

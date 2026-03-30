@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>TEST</title>
+</head>
+<body>
+
+<h2>Scanner Test</h2>
+
+<table border="1">
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Price</th>
+<th>Intrinsic</th>
+<th>Growth</th>
+<th>Signal</th>
+</tr>
+</thead>
+<tbody id="scannerTable"></tbody>
+</table>
+
+<script>
+
+async function loadScanner(){
+
+let res = await fetch("http://127.0.0.1:8000/scan");
+let data = await res.json();
+
+console.log(data);
+
+let html="";
+
+data.forEach(s=>{
+html+=`
+<tr>
+<td>${s.symbol}</td>
+<td>${s.price}</td>
+<td>${s.intrinsic}</td>
+<td>${s.growth}</td>
+<td>${s.signal}</td>
+</tr>
+`;
+});
+
+document.getElementById("scannerTable").innerHTML = html;
+
+}
+
+loadScanner();
+
+</script>
+
+</body>
+</html>

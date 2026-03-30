@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In — QuantScan</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050810;--bg2:#090d1a;--bg3:#0d1225;--border:#1a2240;
+  --accent:#00f5a0;--accent2:#0066ff;
+  --text:#e2e8f0;--muted:#4a5568;--err:#ff4560;
+  --mono:'Space Mono',monospace;--sans:'Syne',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;}
+body{font-family:var(--mono);background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,245,160,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,160,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+
+/* Ticker */
+.ticker{height:26px;background:var(--bg2);border-bottom:1px solid var(--border);overflow:hidden;display:flex;align-items:center;}
+.ticker-track{display:flex;white-space:nowrap;animation:tick 50s linear infinite;font-size:.6rem;color:var(--muted);}
+.ticker-track span{padding:0 18px;border-right:1px solid var(--border);}
+.up{color:#00f5a0!important;} .dn{color:#ff4560!important;}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* Layout */
+.page{flex:1;display:grid;grid-template-columns:1fr 1fr;position:relative;z-index:1;}
+
+/* Left panel */
+.left{background:linear-gradient(135deg,rgba(0,102,255,.05),rgba(0,245,160,.03));border-right:1px solid var(--border);padding:48px;display:flex;flex-direction:column;justify-content:center;}
+.brand{font-family:var(--sans);font-size:2rem;font-weight:800;letter-spacing:-1px;margin-bottom:8px;}
+.brand em{color:var(--accent);font-style:normal;}
+.brand-tag{font-size:.6rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-bottom:48px;}
+.feature{display:flex;align-items:flex-start;gap:14px;margin-bottom:28px;}
+.feat-icon{width:36px;height:36px;border-radius:8px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.feat-title{font-family:var(--sans);font-size:.85rem;font-weight:700;margin-bottom:4px;}
+.feat-desc{font-size:.65rem;color:var(--muted);line-height:1.6;}
+.left-footer{margin-top:auto;padding-top:32px;font-size:.6rem;color:var(--muted);}
+
+/* Right panel */
+.right{display:flex;align-items:center;justify-content:center;padding:48px;}
+.form-card{width:100%;max-width:380px;}
+.form-title{font-family:var(--sans);font-size:1.4rem;font-weight:800;margin-bottom:4px;}
+.form-sub{font-size:.68rem;color:var(--muted);margin-bottom:32px;}
+
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:.62rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px;}
+.field input{width:100%;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--mono);font-size:.82rem;outline:none;transition:border-color .2s,box-shadow .2s;}
+.field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,245,160,.08);}
+.field input::placeholder{color:var(--muted);}
+
+.btn-submit{width:100%;padding:13px;background:var(--accent);color:#000;border:none;border-radius:8px;font-family:var(--mono);font-size:.8rem;font-weight:700;cursor:pointer;letter-spacing:1px;margin-top:8px;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-submit:hover{background:#00e090;transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,245,160,.3);}
+
+.err-msg{color:var(--err);font-size:.68rem;margin-top:10px;min-height:18px;}
+.switch-link{text-align:center;margin-top:20px;font-size:.65rem;color:var(--muted);}
+.switch-link a{color:var(--accent);text-decoration:none;font-weight:700;}
+.switch-link a:hover{text-decoration:underline;}
+
+.divider{display:flex;align-items:center;gap:12px;margin:20px 0;font-size:.6rem;color:var(--muted);}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* Demo badge */
+.demo-note{margin-top:16px;padding:10px 14px;background:rgba(0,245,160,.05);border:1px solid rgba(0,245,160,.15);border-radius:7px;font-size:.62rem;color:var(--muted);line-height:1.6;}
+.demo-note strong{color:var(--accent);}
+
+@media(max-width:700px){.left{display:none;}.page{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="ticker">
+  <div class="ticker-track" id="loginTicker">
+    <span>SIGN IN TO QUANTSCAN</span><span>NIFTY 500 INTELLIGENCE</span>
+    <span>FUNDAMENTAL ANALYSIS</span><span>REAL-TIME SENTIMENT</span>
+    <span>SIGN IN TO QUANTSCAN</span><span>NIFTY 500 INTELLIGENCE</span>
+    <span>FUNDAMENTAL ANALYSIS</span><span>REAL-TIME SENTIMENT</span>
+  </div>
+</div>
+
+<div class="page">
+  <!-- Left info panel -->
+  <div class="left">
+    <div class="brand">Quant<em>Scan</em></div>
+    <div class="brand-tag">NIFTY 500 Intelligence Platform</div>
+
+    <div class="feature">
+      <div class="feat-icon">◈</div>
+      <div>
+        <div class="feat-title">Real Valuation Models</div>
+        <div class="feat-desc">Graham Number and DCF models compute true intrinsic value — not just price momentum.</div>
+      </div>
+    </div>
+    <div class="feature">
+      <div class="feat-icon">◉</div>
+      <div>
+        <div class="feat-title">NLP Sentiment Analysis</div>
+        <div class="feat-desc">TextBlob-powered news scoring gives you market perception insights alongside fundamentals.</div>
+      </div>
+    </div>
+    <div class="feature">
+      <div class="feat-icon">◎</div>
+      <div>
+        <div class="feat-title">500+ Stocks Ranked</div>
+        <div class="feat-desc">Composite QuantScore ranks every NIFTY 500 stock so you know exactly where to look first.</div>
+      </div>
+    </div>
+
+    <div class="left-footer">Final Year Project · Dept. of Information Technology</div>
+  </div>
+
+  <!-- Right form -->
+  <div class="right">
+    <div class="form-card">
+      <div class="form-title">Welcome back</div>
+      <div class="form-sub">Sign in to access your QuantScan dashboard</div>
+
+      <div class="field">
+        <label>Email Address</label>
+        <input id="loginEmail" type="email" placeholder="you@example.com" autocomplete="email">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input id="loginPassword" type="password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+
+      <button class="btn-submit" onclick="loginUser()">⚡ Sign In</button>
+      <div class="err-msg" id="loginError"></div>
+
+      <div class="divider">or</div>
+
+      <div class="demo-note">
+        <strong>Demo mode:</strong> Use any email + password you registered with. Data is saved locally in your browser.
+      </div>
+
+      <div class="switch-link">Don't have an account? <a href="signup.html">Create one →</a></div>
+    </div>
+  </div>
+</div>
+
+<script>
+function loginUser(){
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass  = document.getElementById('loginPassword').value;
+  const errEl = document.getElementById('loginError');
+  errEl.textContent = '';
+
+  if(!email || !pass){ errEl.textContent = '⚠ Please fill in all fields.'; return; }
+
+  const saved = localStorage.getItem('userEmail');
+  const savedP = localStorage.getItem('userPassword');
+
+  if(!saved){ errEl.textContent = '⚠ No account found. Please sign up first.'; return; }
+  if(email === saved && pass === savedP){
+    localStorage.setItem('loggedIn','true');
+    localStorage.setItem('username', email.split('@')[0]);
+    window.location.href = 'dashboard.html';
+  } else {
+    errEl.textContent = '✕ Invalid email or password.';
+  }
+}
+
+document.addEventListener('keydown', e => { if(e.key==='Enter') loginUser(); });
+
+// Live ticker
+async function loadTicker(){
+  try{
+    const r = await fetch('http://127.0.0.1:8000/ticker');
+    const data = await r.json();
+    const el = document.getElementById('loginTicker');
+    const items = data.map(d=>{
+      const cls = d.change>=0?'up':'dn';
+      return `<span class="${cls}">${d.symbol} ₹${d.price} ${d.change>=0?'▲':'▼'}${Math.abs(d.change).toFixed(2)}%</span>`;
+    }).join('');
+    el.innerHTML = items+items;
+  }catch(e){}
+}
+loadTicker();
+</script>
+</body>
+</html>

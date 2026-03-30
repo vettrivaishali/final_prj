@@ -1,0 +1,390 @@
+/* ===============================
+   RESET
+================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+}
+
+body {
+  background: linear-gradient(180deg, #020617, #020a1f);
+  color: #e5e7eb;
+}
+
+/* ===============================
+   HERO INTRO SCREEN
+================================ */
+
+.hero-body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at top, #0f172a, #020617 60%);
+  overflow: hidden;
+}
+
+.hero-container {
+  text-align: center;
+  position: relative;
+}
+
+/* Glow Effect */
+.bg-glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, #2563eb33, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+  50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+}
+
+/* Logo */
+.hero-title {
+  font-size: 80px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  background: linear-gradient(135deg, #2563eb, #22d3ee);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: fadeIn 2s ease-in-out forwards;
+  opacity: 0;
+}
+
+.hero-sub {
+  margin-top: 15px;
+  font-size: 18px;
+  color: #9ca3af;
+  animation: fadeIn 3s ease-in-out forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Arrow */
+.arrow {
+  margin-top: 60px;
+  font-size: 40px;
+  cursor: pointer;
+  color: #22d3ee;
+  animation: bounce 1.6s infinite;
+}
+
+@keyframes bounce {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(12px); }
+}
+
+/* ===============================
+   NAVBAR
+================================ */
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 36px;
+  background: rgba(2, 6, 23, 0.9);
+  border-bottom: 1px solid #1f2933;
+}
+
+.nav-left span {
+  margin-right: 24px;
+  font-size: 14px;
+  color: #9ca3af;
+  cursor: pointer;
+}
+
+.nav-left span:hover {
+  color: #22d3ee;
+}
+
+.nav-right button {
+  margin-left: 10px;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.login-btn {
+  background: transparent;
+  border: 1px solid #2563eb;
+  color: #22d3ee;
+}
+
+.signup-btn {
+  background: linear-gradient(135deg, #2563eb, #22d3ee);
+  color: #020617;
+  border: none;
+}
+
+/* ===============================
+   TICKER
+================================ */
+
+.ticker-container {
+  background: #020617;
+  overflow: hidden;
+  white-space: nowrap;
+  border-bottom: 1px solid #1f2933;
+}
+
+.ticker {
+  display: inline-block;
+  padding: 10px 0;
+  color: #22c55e;
+  font-size: 14px;
+  white-space: nowrap;
+  animation: scroll 50s linear infinite;
+}
+
+@keyframes scroll {
+  from { transform: translateX(0%); }
+  to { transform: translateX(-50%); }
+}
+
+/* ===============================
+   MAIN SECTION
+================================ */
+
+.main {
+  margin-top: 90px;
+  text-align: center;
+}
+
+.main h1 {
+  font-size: 46px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #2563eb, #22d3ee);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.main p {
+  margin-top: 10px;
+  color: #9ca3af;
+  font-size: 15px;
+}
+
+.main h2 {
+  margin-top: 55px;
+  font-size: 24px;
+  color: #e5e7eb;
+}
+
+/* ===============================
+   SEARCH BOX
+================================ */
+
+.search-box {
+  margin-top: 30px;
+}
+
+.search-box input {
+  width: 440px;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #1f2933;
+  background: #020617;
+  color: #e5e7eb;
+  font-size: 15px;
+}
+
+.search-box input::placeholder {
+  color: #6b7280;
+}
+
+.search-box button {
+  margin-top: 18px;
+  padding: 12px 34px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #2563eb, #22d3ee);
+  color: #020617;
+  font-size: 15px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.search-box button:hover {
+  opacity: 0.9;
+}
+
+/* ===============================
+   USER DROPDOWN
+================================ */
+
+.user-menu {
+  position: relative;
+  cursor: pointer;
+}
+
+.user-name {
+  font-size: 14px;
+  color: #e5e7eb;
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 28px;
+  background: #020617;
+  border: 1px solid #1f2933;
+  border-radius: 8px;
+  min-width: 140px;
+  z-index: 10;
+}
+
+.dropdown a {
+  display: block;
+  padding: 10px;
+  color: #9ca3af;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.dropdown a:hover {
+  background: #0f172a;
+  color: #22d3ee;
+}
+
+.user-menu:hover .dropdown {
+  display: block;
+}
+.main {
+  margin-top: 120px;
+  text-align: center;
+}
+
+.main h1 {
+  font-size: 48px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #2563eb, #22d3ee);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.main p {
+  margin-top: 10px;
+  color: #9ca3af;
+  font-size: 15px;
+}
+
+.main h2 {
+  margin-top: 55px;
+  font-size: 24px;
+  color: #e5e7eb;
+}
+.ticker {
+  display: inline-block;
+  padding: 10px 0;
+  color: #22c55e;
+  font-size: 14px;
+  white-space: nowrap;
+  animation: scroll 50s linear infinite;
+}
+
+@keyframes scroll {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+body{
+background:#0b1220;
+color:white;
+font-family:Arial;
+text-align:center;
+}
+
+table{
+margin:auto;
+margin-top:20px;
+border-collapse:collapse;
+}
+
+td,th{
+padding:10px;
+border:1px solid gray;
+}
+/* ── QuantScan Real Data Styles ─────────────────────────────── */
+.loading { color: #f59e0b; font-style: italic; }
+.error   { color: #ef4444; }
+.green   { color: #22c55e; font-weight: bold; }
+.red     { color: #ef4444; font-weight: bold; }
+.orange  { color: #f59e0b; font-weight: bold; }
+
+/* Signal badges */
+.signal-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.signal-badge.strong-buy  { background: #14532d; color: #4ade80; }
+.signal-badge.buy         { background: #166534; color: #86efac; }
+.signal-badge.hold        { background: #1c3d5a; color: #7dd3fc; }
+.signal-badge.sell        { background: #7f1d1d; color: #fca5a5; }
+.signal-badge.strong-sell { background: #450a0a; color: #f87171; }
+
+/* Grade badges */
+.grade-A\+ { color: #4ade80; font-weight: 800; }
+.grade-A   { color: #86efac; font-weight: 700; }
+.grade-B   { color: #fde68a; font-weight: 700; }
+.grade-C   { color: #fb923c; }
+.grade-D   { color: #f87171; }
+.grade-badge {
+  font-size: 0.8rem;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #1e293b;
+  margin-left: 8px;
+}
+
+/* Sentiment */
+.sentiment-badge { font-size: 0.8rem; padding: 2px 10px; border-radius: 999px; margin-left: 8px; }
+.sentiment-badge.positive, td.positive { color: #4ade80; }
+.sentiment-badge.negative, td.negative { color: #f87171; }
+.sentiment-badge.neutral,  td.neutral  { color: #94a3b8; }
+.positive { color: #4ade80; }
+.negative { color: #f87171; }
+.neutral  { color: #94a3b8; }
+
+/* Insight panel */
+.insight-row   { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+.insight-symbol { font-size:1.4rem; font-weight:800; color:#f1f5f9; }
+.insight-stats  { display:flex; flex-wrap:wrap; gap:16px; margin-bottom:10px; }
+.stat-item      { display:flex; flex-direction:column; gap:2px; }
+.stat-label     { font-size:0.7rem; color:#94a3b8; text-transform:uppercase; }
+.stat-val       { font-size:1rem; font-weight:700; color:#e2e8f0; }
+.valuation-row  { display:flex; gap:20px; font-size:0.85rem; color:#94a3b8; }
+
+/* Fundamentals table */
+.fund-table { width:100%; border-collapse:collapse; font-size:0.9rem; }
+.fund-table td { padding:6px 10px; border-bottom:1px solid #1e293b; }
+.fund-table td:nth-child(odd) { color:#94a3b8; font-size:0.8rem; }
+
+/* Sentiment */
+.sentiment-counts { display:flex; gap:16px; margin:8px 0; font-size:0.85rem; }
+.headline-list { padding-left:16px; font-size:0.8rem; color:#94a3b8; line-height:1.8; }
+
+/* Scanner table selected row */
+tr.selected { background: #064e3b !important; }
+tr[onclick] { cursor: pointer; }
+tr[onclick]:hover { background: #0f172a; }

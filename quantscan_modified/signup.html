@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Account — QuantScan</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050810;--bg2:#090d1a;--bg3:#0d1225;--border:#1a2240;
+  --accent:#00f5a0;--accent2:#0066ff;
+  --text:#e2e8f0;--muted:#4a5568;--err:#ff4560;
+  --mono:'Space Mono',monospace;--sans:'Syne',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;}
+body{font-family:var(--mono);background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,102,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,102,255,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+
+.ticker{height:26px;background:var(--bg2);border-bottom:1px solid var(--border);overflow:hidden;display:flex;align-items:center;}
+.ticker-track{display:flex;white-space:nowrap;animation:tick 50s linear infinite;font-size:.6rem;color:var(--muted);}
+.ticker-track span{padding:0 18px;border-right:1px solid var(--border);}
+.up{color:#00f5a0!important;} .dn{color:#ff4560!important;}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+.page{flex:1;display:grid;grid-template-columns:1fr 1fr;position:relative;z-index:1;}
+
+/* Right info panel (reversed from login) */
+.right-info{background:linear-gradient(135deg,rgba(0,245,160,.03),rgba(0,102,255,.05));border-left:1px solid var(--border);padding:48px;display:flex;flex-direction:column;justify-content:center;order:2;}
+.brand{font-family:var(--sans);font-size:2rem;font-weight:800;letter-spacing:-1px;margin-bottom:8px;}
+.brand em{color:var(--accent);font-style:normal;}
+.brand-tag{font-size:.6rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-bottom:48px;}
+
+/* Steps */
+.step{display:flex;align-items:flex-start;gap:14px;margin-bottom:28px;}
+.step-num{width:28px;height:28px;border-radius:6px;background:rgba(0,245,160,.1);border:1px solid rgba(0,245,160,.25);display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-weight:800;font-size:.75rem;color:var(--accent);flex-shrink:0;}
+.step-title{font-family:var(--sans);font-size:.85rem;font-weight:700;margin-bottom:4px;}
+.step-desc{font-size:.65rem;color:var(--muted);line-height:1.6;}
+.right-footer{margin-top:auto;padding-top:32px;font-size:.6rem;color:var(--muted);}
+
+/* Form panel */
+.left-form{display:flex;align-items:center;justify-content:center;padding:48px;order:1;}
+.form-card{width:100%;max-width:380px;}
+.form-title{font-family:var(--sans);font-size:1.4rem;font-weight:800;margin-bottom:4px;}
+.form-sub{font-size:.68rem;color:var(--muted);margin-bottom:32px;}
+
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:.62rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px;}
+.field input{width:100%;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--mono);font-size:.82rem;outline:none;transition:border-color .2s,box-shadow .2s;}
+.field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,245,160,.08);}
+.field input::placeholder{color:var(--muted);}
+
+/* Password strength bar */
+.strength-bar{height:3px;border-radius:2px;background:var(--border);margin-top:6px;overflow:hidden;}
+.strength-fill{height:100%;border-radius:2px;transition:width .3s,background .3s;width:0%;}
+.strength-label{font-size:.58rem;color:var(--muted);margin-top:4px;}
+
+.btn-submit{width:100%;padding:13px;background:var(--accent);color:#000;border:none;border-radius:8px;font-family:var(--mono);font-size:.8rem;font-weight:700;cursor:pointer;letter-spacing:1px;margin-top:8px;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-submit:hover{background:#00e090;transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,245,160,.3);}
+
+.err-msg{color:var(--err);font-size:.68rem;margin-top:10px;min-height:18px;}
+.ok-msg{color:var(--accent);font-size:.68rem;margin-top:10px;min-height:18px;}
+.switch-link{text-align:center;margin-top:20px;font-size:.65rem;color:var(--muted);}
+.switch-link a{color:var(--accent);text-decoration:none;font-weight:700;}
+
+/* Terms */
+.terms{margin-top:16px;font-size:.6rem;color:var(--muted);text-align:center;line-height:1.6;}
+
+@media(max-width:700px){.right-info{display:none;}.page{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="ticker">
+  <div class="ticker-track" id="signupTicker">
+    <span>CREATE YOUR ACCOUNT</span><span>NIFTY 500 INTELLIGENCE</span>
+    <span>500+ STOCKS TRACKED</span><span>FREE ACCESS</span>
+    <span>CREATE YOUR ACCOUNT</span><span>NIFTY 500 INTELLIGENCE</span>
+    <span>500+ STOCKS TRACKED</span><span>FREE ACCESS</span>
+  </div>
+</div>
+
+<div class="page">
+  <!-- Form -->
+  <div class="left-form">
+    <div class="form-card">
+      <div class="form-title">Create account</div>
+      <div class="form-sub">Start analyzing NIFTY 500 stocks in minutes</div>
+
+      <div class="field">
+        <label>Full Name</label>
+        <input id="signupName" type="text" placeholder="Your name" autocomplete="name">
+      </div>
+      <div class="field">
+        <label>Email Address</label>
+        <input id="signupEmail" type="email" placeholder="you@example.com" autocomplete="email">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input id="signupPassword" type="password" placeholder="Min. 6 characters" autocomplete="new-password" oninput="checkStrength(this.value)">
+        <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+        <div class="strength-label" id="strengthLabel">Enter a password</div>
+      </div>
+
+      <button class="btn-submit" onclick="signupUser()">◈ Create Account</button>
+      <div class="err-msg" id="signupError"></div>
+      <div class="ok-msg" id="signupOk"></div>
+
+      <div class="terms">By signing up you agree to use this tool for educational purposes only. QuantScan is a decision-support tool, not financial advice.</div>
+      <div class="switch-link">Already have an account? <a href="login.html">Sign in →</a></div>
+    </div>
+  </div>
+
+  <!-- Info -->
+  <div class="right-info">
+    <div class="brand">Quant<em>Scan</em></div>
+    <div class="brand-tag">Get started in 3 steps</div>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-title">Create your account</div>
+        <div class="step-desc">Sign up with your email and set a secure password to access the full dashboard.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-title">Run the NIFTY 500 Scanner</div>
+        <div class="step-desc">Let QuantScan scan all 500 stocks and rank them by fundamental health, intrinsic value, and sentiment score.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-title">Analyze any stock deeply</div>
+        <div class="step-desc">Click any symbol for a full breakdown — Graham number, DCF value, RSI, EMA crossovers, and live news sentiment.</div>
+      </div>
+    </div>
+
+    <div class="right-footer">Final Year Project · Dept. of Information Technology</div>
+  </div>
+</div>
+
+<script>
+function checkStrength(val){
+  const fill  = document.getElementById('strengthFill');
+  const label = document.getElementById('strengthLabel');
+  if(!val){ fill.style.width='0%'; label.textContent='Enter a password'; return; }
+  let score = 0;
+  if(val.length >= 6)  score++;
+  if(val.length >= 10) score++;
+  if(/[A-Z]/.test(val)) score++;
+  if(/[0-9]/.test(val)) score++;
+  if(/[^A-Za-z0-9]/.test(val)) score++;
+  const levels = [
+    {w:'20%',c:'#ff4560',t:'Too short'},
+    {w:'40%',c:'#ff6b35',t:'Weak'},
+    {w:'60%',c:'#f0b429',t:'Fair'},
+    {w:'80%',c:'#7eb3ff',t:'Good'},
+    {w:'100%',c:'#00f5a0',t:'Strong ✓'},
+  ];
+  const lvl = levels[Math.min(score-1, 4)] || levels[0];
+  fill.style.width  = lvl.w;
+  fill.style.background = lvl.c;
+  label.textContent = lvl.t;
+  label.style.color = lvl.c;
+}
+
+function signupUser(){
+  const name  = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const pass  = document.getElementById('signupPassword').value;
+  const errEl = document.getElementById('signupError');
+  const okEl  = document.getElementById('signupOk');
+  errEl.textContent = ''; okEl.textContent = '';
+
+  if(!name)              { errEl.textContent = '⚠ Please enter your name.'; return; }
+  if(!email)             { errEl.textContent = '⚠ Please enter your email.'; return; }
+  if(!email.includes('@')){ errEl.textContent = '⚠ Enter a valid email address.'; return; }
+  if(pass.length < 6)    { errEl.textContent = '⚠ Password must be at least 6 characters.'; return; }
+
+  localStorage.setItem('userEmail',    email);
+  localStorage.setItem('userPassword', pass);
+  localStorage.setItem('userName',     name);
+
+  okEl.textContent = '✓ Account created! Redirecting to sign in…';
+  setTimeout(()=> window.location.href = 'login.html', 1500);
+}
+
+document.addEventListener('keydown', e => { if(e.key==='Enter') signupUser(); });
+
+async function loadTicker(){
+  try{
+    const r = await fetch('http://127.0.0.1:8000/ticker');
+    const data = await r.json();
+    const el = document.getElementById('signupTicker');
+    const items = data.map(d=>{
+      const cls = d.change>=0?'up':'dn';
+      return `<span class="${cls}">${d.symbol} ₹${d.price} ${d.change>=0?'▲':'▼'}${Math.abs(d.change).toFixed(2)}%</span>`;
+    }).join('');
+    el.innerHTML = items+items;
+  }catch(e){}
+}
+loadTicker();
+</script>
+</body>
+</html>

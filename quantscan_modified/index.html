@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuantScan — NIFTY 500 Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050810;--bg2:#090d1a;--border:#1a2240;
+  --accent:#00f5a0;--accent2:#0066ff;
+  --text:#e2e8f0;--muted:#4a5568;
+  --mono:'Space Mono',monospace;--sans:'Syne',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:var(--mono);background:var(--bg);color:var(--text);}
+
+/* Grid bg */
+body::before{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(0,245,160,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,160,.025) 1px,transparent 1px);
+  background-size:44px 44px;pointer-events:none;}
+
+/* Ticker */
+.ticker{position:fixed;top:0;left:0;right:0;z-index:10;height:28px;background:rgba(9,13,26,.95);border-bottom:1px solid var(--border);overflow:hidden;display:flex;align-items:center;}
+.ticker-track{display:flex;white-space:nowrap;animation:tick 50s linear infinite;font-size:.62rem;color:var(--muted);}
+.ticker-track span{padding:0 18px;border-right:1px solid var(--border);}
+.up{color:#00f5a0!important;} .dn{color:#ff4560!important;}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* Center layout */
+.wrap{position:relative;z-index:1;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding-top:28px;}
+
+/* Glow orb */
+.orb{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(0,245,160,.07),transparent 70%);pointer-events:none;animation:breathe 5s ease-in-out infinite;}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.15);opacity:1}}
+
+/* Rings */
+.rings{position:absolute;width:360px;height:360px;}
+.ring{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(0,245,160,.08);animation:spin 20s linear infinite;}
+.ring:nth-child(2){inset:30px;animation-duration:15s;animation-direction:reverse;border-color:rgba(0,102,255,.08);}
+.ring:nth-child(3){inset:60px;animation-duration:25s;border-color:rgba(0,245,160,.05);}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+/* Logo */
+.logo{font-family:var(--sans);font-size:clamp(3rem,8vw,5.5rem);font-weight:800;letter-spacing:-3px;line-height:1;margin-bottom:12px;animation:rise .8s ease both;}
+.logo em{color:var(--accent);font-style:normal;}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+.tagline{font-size:.75rem;color:var(--muted);letter-spacing:4px;text-transform:uppercase;margin-bottom:8px;animation:rise .8s .15s ease both;opacity:0;}
+.desc{font-size:.85rem;color:#64748b;max-width:380px;line-height:1.7;margin-bottom:40px;animation:rise .8s .25s ease both;opacity:0;}
+
+/* Stats row */
+.stats{display:flex;gap:32px;margin-bottom:44px;animation:rise .8s .35s ease both;opacity:0;}
+.stat{text-align:center;}
+.stat-val{font-family:var(--sans);font-size:1.4rem;font-weight:800;color:var(--accent);}
+.stat-label{font-size:.58rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:3px;}
+
+/* Buttons */
+.btns{display:flex;gap:12px;animation:rise .8s .45s ease both;opacity:0;}
+.btn{padding:13px 32px;border-radius:8px;font-family:var(--mono);font-size:.78rem;font-weight:700;cursor:pointer;letter-spacing:1px;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;border:none;}
+.btn-main{background:var(--accent);color:#000;}
+.btn-main:hover{background:#00e090;transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,245,160,.35);}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border);}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
+
+/* Bottom bar */
+.bottom{position:fixed;bottom:0;left:0;right:0;padding:14px 28px;display:flex;justify-content:space-between;align-items:center;font-size:.6rem;color:var(--muted);border-top:1px solid var(--border);background:rgba(5,8,16,.8);backdrop-filter:blur(8px);}
+
+/* Floating badges */
+.badge{position:absolute;padding:6px 14px;border-radius:6px;background:var(--bg2);border:1px solid var(--border);font-size:.62rem;color:var(--muted);white-space:nowrap;animation:float 6s ease-in-out infinite;}
+.badge-1{top:18%;left:8%;animation-delay:0s;}
+.badge-2{top:22%;right:8%;animation-delay:1.5s;}
+.badge-3{bottom:28%;left:6%;animation-delay:3s;}
+.badge-4{bottom:24%;right:7%;animation-delay:4.5s;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.badge-dot{display:inline-block;width:5px;height:5px;border-radius:50%;margin-right:6px;background:var(--accent);box-shadow:0 0 5px var(--accent);}
+</style>
+</head>
+<body>
+
+<!-- Ticker -->
+<div class="ticker">
+  <div class="ticker-track" id="indexTicker">
+    <span>QUANTSCAN</span><span>NIFTY 500 INTELLIGENCE</span><span>500+ STOCKS TRACKED</span>
+    <span>FUNDAMENTAL · SENTIMENT · TECHNICAL</span><span>REAL-TIME NSE DATA</span>
+    <span>QUANTSCAN</span><span>NIFTY 500 INTELLIGENCE</span><span>500+ STOCKS TRACKED</span>
+    <span>FUNDAMENTAL · SENTIMENT · TECHNICAL</span><span>REAL-TIME NSE DATA</span>
+  </div>
+</div>
+
+<!-- Floating badges -->
+<div class="badge badge-1"><span class="badge-dot"></span>Graham Number Model</div>
+<div class="badge badge-2"><span class="badge-dot"></span>Live NSE Prices</div>
+<div class="badge badge-3"><span class="badge-dot"></span>NLP Sentiment Engine</div>
+<div class="badge badge-4"><span class="badge-dot"></span>DCF Valuation</div>
+
+<div class="wrap">
+  <div class="orb"></div>
+  <div class="rings">
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+  </div>
+
+  <div class="logo">Quant<em>Scan</em></div>
+  <div class="tagline">NIFTY 500 Intelligence Platform</div>
+  <p class="desc">Identify undervalued stocks using fundamental analysis, DCF valuation, and real-time news sentiment — all in one dashboard.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-val">500+</div><div class="stat-label">Stocks Tracked</div></div>
+    <div class="stat"><div class="stat-val">3</div><div class="stat-label">Valuation Models</div></div>
+    <div class="stat"><div class="stat-val">Live</div><div class="stat-label">NSE Data</div></div>
+  </div>
+
+  <div class="btns">
+    <a href="login.html" class="btn btn-main">⚡ Get Started</a>
+    <a href="dashboard.html" class="btn btn-ghost">View Dashboard →</a>
+  </div>
+</div>
+
+<div class="bottom">
+  <span>© 2025 QuantScan · Final Year Project · Dept. of Information Technology</span>
+  <span>POWERED BY NSE · YFINANCE · TEXTBLOB</span>
+</div>
+
+<script>
+// Fetch live ticker data
+async function loadIndexTicker(){
+  try{
+    const r = await fetch('http://127.0.0.1:8000/ticker');
+    const data = await r.json();
+    const el = document.getElementById('indexTicker');
+    const items = data.map(d=>{
+      const cls = d.change >= 0 ? 'up' : 'dn';
+      const arrow = d.change >= 0 ? '▲' : '▼';
+      return `<span class="${cls}">${d.symbol} ₹${d.price} ${arrow}${Math.abs(d.change).toFixed(2)}%</span>`;
+    }).join('');
+    el.innerHTML = items + items;
+  }catch(e){ /* keep static text if backend not running */ }
+}
+loadIndexTicker();
+setInterval(loadIndexTicker, 30000);
+</script>
+</body>
+</html>
